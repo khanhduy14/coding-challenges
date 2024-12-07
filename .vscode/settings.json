@@ -1,0 +1,122 @@
+{
+    "files.exclude": {
+        "**/.mypy_cache": true,
+        "**/.angular": true,
+        "**/node_modules": true,
+        "**/CVS": true,
+        "**/.DS_Store": true,
+        "**/*.pyc": true,
+        "**/__pycache__": true, // python generated install files
+        "**/.eggs": true, // python generated install files
+        "**/build": true, // python generated install files
+        "**/dist": true, // python generated install files
+        "**/*.egg-info": true, // python generated install files
+    },
+    "files.trimTrailingWhitespace": true,
+    "diffEditor.ignoreTrimWhitespace": true,
+    "editor.rulers": [
+        120
+    ],
+    "editor.formatOnSaveMode": "file",
+    "editor.formatOnSave": true,
+    "editor.formatOnType": false,
+    "editor.tabSize": 4,
+    "editor.indentSize": 4,
+    "editor.codeActionsOnSave": {
+        "source.organizeImports": "explicit"
+    },
+    "python.languageServer": "Pylance",
+    // Analysis / Type checking
+    //"python.analysis.useLibraryCodeForTypes": true,
+    "python.analysis.stubPath": "typings",
+    "python.analysis.typeCheckingMode": "strict",
+    "python.analysis.diagnosticSeverityOverrides": {
+        // Do not report theoretically unnessecary isinstance checks.
+        // Python is not type safe!
+        // We can not rely on static type information.
+        "reportUnnecessaryIsInstance": "none",
+        // Do not report unused function because of false positives during registering of api endpoints
+        // with fast api annotations
+        "reportUnusedFunction": "none",
+        "reportUnknownMemberType": "none",
+        "reportArgumentType": "none",
+        "reportUnknownArgumentType": "none",
+        "reportAttributeAccessIssue": "none",
+        "reportUnknownVariableType": "none",
+        "reportUnknownLambdaType": "none",
+
+    },
+    "python.analysis.autoImportCompletions": true,
+    "python.analysis.diagnosticMode": "workspace",
+    "python.analysis.ignore": [
+        "**/.venv/**",
+        "**/.mypy_cache/**",
+        "**/typings/**",
+        "**/dbt_packages/**"
+    ],
+    // Python linting
+    "pylint.args": [
+        "--rcfile=${workspaceFolder}/.vscode/.pylintrc"
+    ],
+    "pylint.ignorePatterns": [
+        "**/.venv/**",
+        "**/.mypy_cache/**",
+        "**/typings/**",
+        "**/dbt_packages/**"
+    ],
+    "isort.args": [
+        "--settings-path=${workspaceFolder}/.vscode/.isort.cfg",
+        "--src-path=${workspaceFolder}",
+    ],
+    "yapf.args": [
+        "--style",
+        "${workspaceFolder}/.vscode/.yapf.cfg"
+    ],
+    // Python Docstring
+    "autoDocstring.docstringFormat": "google",
+    "autoDocstring.quoteStyle": "\"\"\"",
+    "autoDocstring.includeName": false,
+    "autoDocstring.guessTypes": true,
+    "autoDocstring.startOnNewLine": true,
+    // Python testing
+    "python.testing.unittestArgs": [
+        "-v",
+        "-s",
+        "./tests",
+        "-p",
+        "test_*.py"
+    ],
+    "python.testing.unittestEnabled": true,
+    "python.testing.pytestEnabled": false,
+    "jupyter.notebookFileRoot": "${workspaceFolder}",
+    // Python locations (virtual environment location)
+    "python.defaultInterpreterPath": "${workspaceFolder}/.venv",
+    // pipenv settings, that we have the local virtual environment (.venv)
+    // PIPENV_VENV_IN_PROJECT, PIPENV_IGNORE_VIRTUALENVS
+    "terminal.integrated.env.windows": {
+        "PYTHONPATH": "${workspaceFolder}",
+        "PYOPENCL_COMPILER_OUTPUT": "1",
+        "PIPENV_VENV_IN_PROJECT": "1",
+        "PIPENV_IGNORE_VIRTUALENVS": "1",
+    },
+    "terminal.integrated.env.linux": {
+        "PYTHONPATH": "${workspaceFolder}",
+        "PYOPENCL_COMPILER_OUTPUT": "1",
+        "PIPENV_VENV_IN_PROJECT": "1",
+        "PIPENV_IGNORE_VIRTUALENVS": "1",
+    },
+    "terminal.integrated.env.osx": {
+        "PYTHONPATH": "${workspaceFolder}",
+        "PYOPENCL_COMPILER_OUTPUT": "1",
+        "PIPENV_VENV_IN_PROJECT": "1",
+        "PIPENV_IGNORE_VIRTUALENVS": "1",
+    },
+    "[python]": {
+        "editor.defaultFormatter": "eeyore.yapf",
+        "diffEditor.ignoreTrimWhitespace": true
+    },
+    // other code types then python
+    "[json]": {
+        "editor.defaultFormatter": "vscode.json-language-features"
+    },
+}

@@ -1,0 +1,102 @@
+[MASTER]
+
+# Add the root project path to the PYTHONPATH.
+# Setting the PYTHONPATH in settings.json does not work, because "terminal.integrated.env.*"
+# do not affect linting
+init-hook='import os, sys; sys.path.append(os.path.join(".", "dags"));'
+
+
+
+# String used as indentation unit. This is usually "    " (4 spaces) or "\t" (1
+# tab).
+indent-string='    '
+
+# Maximum number of characters on a single line.
+max-line-length=120
+
+
+disable=
+    # get wrongfully reported for Enums
+    too-few-public-methods,
+    # disable some docstrign warnings
+    missing-class-docstring,
+    missing-module-docstring,
+    missing-function-docstring,
+    # gets reported by pylance
+    unused-import,
+    # gets reported by pylance
+    no-name-in-module,
+    # reported for costructors where it makes sense to have many arguments (e.g. data classes)
+    too-many-arguments,
+    # Do not report f strings in logging statements. This will slow the performance when logging statements
+    # are not printed based on their logging level. We do not have a debug logging level, because we are
+    # all ready very cautious everything that effects the application performance. f strings make the code
+    # easier to read and we use them everywhere.
+    logging-fstring-interpolation,
+    # This gives a lot of false positives. In most cases we raise an exception after catching one in order
+    # to return a more readable message. The old exception is useful only sometimes.
+    raise-missing-from,
+    # We use additinal parens to make the code more readable
+    superfluous-parens,
+    # This gives a lot of false positives for dataframes
+    singleton-comparison,
+    # in the airflow DAGs we have to import inside a function because of the
+    # different virtual environments that we are using.
+    import-outside-toplevel,
+    # false positives for pydanntic settings Union fields
+    no-member,
+    import-error
+
+
+[BASIC]
+
+good-names=i,j,k,x, # Iterators
+           f, # Files
+           ex, e, # Exceptions
+           _, # unused
+           df, # DataFrame
+           logger,
+           id # ID used in database
+
+
+# Naming style matching correct argument names.
+argument-naming-style=snake_case
+
+# Regular expression matching correct argument names. Overrides argument-
+# naming-style.
+#argument-rgx=
+
+# Naming style matching correct attribute names.
+attr-naming-style=snake_case
+
+# Regular expression matching correct attribute names. Overrides attr-naming-
+# style.
+#attr-rgx=
+
+# Bad variable names which should always be refused, separated by a comma.
+bad-names=foo,
+          bar,
+          baz,
+          toto,
+          tutu,
+          tata,
+          asd
+
+# Naming style matching correct class attribute names.
+class-attribute-naming-style=any
+
+class-const-naming-style=any
+
+# Regular expression matching correct class attribute names. Overrides class-
+# attribute-naming-style.
+#class-attribute-rgx=
+
+# Naming style matching correct class names.
+class-naming-style=PascalCase
+
+# Regular expression matching correct class names. Overrides class-naming-
+# style.
+#class-rgx=
+
+# Naming style matching correct constant names.
+const-naming-style=UPPER_CASE

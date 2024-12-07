@@ -1,0 +1,26 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[requires]
+# The python version must be set in the Dockerfile as well
+python_version = "3.12"
+
+[packages]
+# oclgrind-binary-distribution = "18.3.post2"
+fastapi = "*"
+redis = "*"
+pydantic = "*"
+uvicorn = {extras = ["standard"] }
+
+[dev-packages]
+
+# formatter
+yapf = "*"
+
+# linter
+pylint = "*"
+
+# dependency inspection
+johnnydep = "*"
