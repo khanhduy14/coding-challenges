@@ -1,3 +1,4 @@
+import asyncio
 import logging
 
 from fastapi import APIRouter, FastAPI, HTTPException, WebSocket, WebSocketDisconnect
@@ -19,28 +20,13 @@ def register_quiz_api(app: FastAPI, ws_connection: WsConnection, redis: RedisCon
 
     @router.websocket("/ws/{quiz_id}/{user_id}")
     async def websocket_endpoint(quiz_id: str, user_id: str, websocket: WebSocket):
-        await ws_connection.connect(quiz_id, websocket)
-
-        redis.client.hset(f"quiz:{quiz_id}:users", user_id, "connected")  # type: ignore
-
-        user_score = redis.client.hget(f"quiz:{quiz_id}:scores", user_id)
-        if not user_score:
-            redis.client.hset(f"quiz:{quiz_id}:scores", user_id, 0)
-            user_score = 0
+        await ws_connection.connect(quiz_id, user_id, websocket)
 
         try:
-            await websocket.send_json({
-                "type": "reconnection_successful",
-                "user_id": user_id,
-                "current_score": int(user_score),
-            })
-
             while True:
                 data = await websocket.receive_json()
                 if data["type"] == "submit_answer":
-                    answer = data["answer"]
-                    score = 10 if answer == "correct" else 0
-
+                    score = 10 if data["answer"] == "correct" else 0
                     redis.client.hincrby(f"quiz:{quiz_id}:scores", user_id, score)
 
                     leaderboard = redis.client.hgetall(f"quiz:{quiz_id}:scores")
@@ -48,15 +34,11 @@ def register_quiz_api(app: FastAPI, ws_connection: WsConnection, redis: RedisCon
 
                     await ws_connection.broadcast(quiz_id, {
                         "type": "leaderboard_update",
-                        "leaderboard": sorted_leaderboard
+                        "leaderboard": sorted_leaderboard,
                     })
         except WebSocketDisconnect:
-            redis.client.hset(f"quiz:{quiz_id}:users", user_id, "disconnected")
-            ws_connection.disconnect(quiz_id, websocket)
-            logging.debug(f"User {user_id} disconnected from quiz {quiz_id}")
-        except Exception as e:
-            logging.error(f"Unexpected error: {e}")
-            await websocket.close()
+            ws_connection.disconnect(quiz_id, user_id)
+            print(f"User {user_id} disconnected from quiz {quiz_id}")
 
     @router.post("/join/{quiz_id}/{user_id}")
     async def join_quiz(quiz_id: str, user_id: str):

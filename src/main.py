@@ -13,7 +13,7 @@ def main():
     log_fmt = "%(asctime)s %(levelname)-7s - %(name)-20s: %(message)s"
     logging.basicConfig(level=logging.INFO, format=log_fmt, datefmt="%Y-%m-%d %H:%M:%S")
     redis = RedisConnection(host="localhost")
-    ws_connection = WsConnection()
+    ws_connection = WsConnection(redis.client)
 
     app = FastAPI()
 
